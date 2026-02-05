@@ -1,3 +1,23 @@
 Questions:
 
 Write as many questions as you can based on the project specs.
+
+1. Why do you always do Wolverine-themed questions? (O)
+2. What datatypes will we need to use for this projet (O)
+3. When is this assignment due? (C)
+4. How would the optimal path be found? (O)
+5. How do you use queues for this assignment?? (O)
+6. How do you dequeue/enqueue something? (O)
+7. How do you only enqueue the spaces to your direct North, West, South, East, and not the spaces inbetween them? (O)
+8. How can I demonstrate my understanding of the algorithm if I don't understand the algorithm and need help :C? (O)
+9. Why are we given two forms of inputs and outputs? What is the significance of having both? (O)
+10. Why do we need to use a scanner for the input? Are we generating the maze based off of input from a different file? (O)
+11. How do you remove the time taken to read the input and return the output? (O)
+12. What is a "switch"? (O)
+13. Why are extra characters on a line not an error? (O)
+14. What is an acceptable time the algorithm can take to run? (C)
+15. What information would be added to the Design Plan? (O)
+16. What is a "traded" test?? (O)
+17. Do we need to make 5 test mazes or 10? Different pages have different numbers. (C)
+18. How do I even start	writing the code for this assignment??? (O)
+
