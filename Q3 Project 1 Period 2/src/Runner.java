@@ -12,7 +12,7 @@ public class Runner {
 	
 	
 	public static void main(String[] name) { //main method needs to be exact
-		readQueueFile("hardMap1C");
+		readCoFile("easyMap1C");
 	}
 	
 	
@@ -33,10 +33,22 @@ public class Runner {
 			//add map values to 2d array map
 			for(int r = 0; r < map.length; r++) {
 				String oneRow = scanner.next(); //set entire line to one string
-				for(int c = 0; c < map[0].length; c++) {
-					map[r][c] = oneRow.substring(c, c+1); //save each individual character to map
+				//check for not enough characters in row + not enough rows
+				if(oneRow.length() != cols) {
+					System.out.println("IncompleteMapException"); //need to add throw/catch (how to do?????)
 				}
+				for(int c = 0; c < map[0].length; c++) {
+					//check for illegal characters
+					if(!(oneRow.substring(c, c+1).equals("w")) && !(oneRow.substring(c, c+1).equals("@")) && !(oneRow.substring(c, c+1).equals(".")) && !(oneRow.substring(c, c+1).equals("$")) && !(oneRow.substring(c, c+1).equals("|"))) {
+						System.out.println("IllegalMapCharacterException"); //need to add throw/catch (how to do?????)
+					}
+					else {
+						map[r][c] = oneRow.substring(c, c+1); //save each individual character to map
+					}
+				}
+				
 			}
+			
 			
 			
 			System.out.println(Arrays.deepToString(map)); //printing map
@@ -50,7 +62,7 @@ public class Runner {
 	}
 	
 	
-	public static void readQueueFile(String fileName) {
+	public static void readCoFile(String fileName) {
 		File file = new File(fileName);
 		
 		try { 
@@ -58,6 +70,10 @@ public class Runner {
 			Scanner scanner = new Scanner(file);
 
 			//saving how many total rows, columns, and sections are in the map
+			if(!scanner.hasNextInt()) {
+				System.out.println("IncorrectMapFormatException");
+			}
+			
 			rows = Integer.parseInt(scanner.next());
 			cols = Integer.parseInt(scanner.next());
 			nums = Integer.parseInt(scanner.next());
@@ -68,6 +84,7 @@ public class Runner {
 				String val = scanner.next(); //individual character
 				
 				//row, col, section number for each individual character
+				
 				int row = Integer.parseInt(scanner.next());
 				int col = Integer.parseInt(scanner.next());
 				int num = Integer.parseInt(scanner.next());
