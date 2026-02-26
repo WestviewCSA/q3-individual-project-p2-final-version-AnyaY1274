@@ -1,0 +1,16 @@
+Week 1:
+- Write easy/medium/hard lists in text format and coordinate format
+- Read and store data from lists in text format and coordinate format
+- Check for errors in maps and add exceptions
+
+Week 2:
+- Write Queue-based Approach
+- Write Stack-based Approach
+
+Week 3:
+- Continue working on both approaches if not completed
+- Determine Optimal Path Approach
+
+Week 4:
+- Check time taken for each Approach
+- Ensure that code catches all errors and works properly
