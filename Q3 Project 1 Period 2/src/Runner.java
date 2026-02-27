@@ -1,7 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Queue;
 
 public class Runner {
 
@@ -12,7 +16,6 @@ public class Runner {
 	
 	
 	public static void main(String[] name) { //main method needs to be exact
-		//readCoFile("easyMap1C");
 		
 		try{
 			readCoFile("easyMap1C");
@@ -109,14 +112,21 @@ public class Runner {
 			
 			while(scanner.hasNext()) {
 				String val = scanner.next(); //individual character
-				
+				if((!val.equals("w")) && !val.equals("@") && !val.equals("|") && !val.equals("$")) {
+					throw new IllegalMapCharacterException("IllegalMapCharacterException - Illegal characters on a map");
+				}
 				//row, col, section number for each individual character
 				
 				int row = Integer.parseInt(scanner.next());
 				int col = Integer.parseInt(scanner.next());
 				int num = Integer.parseInt(scanner.next());
 				
-				map[row + (rows*num)][col] = val; //row location is equal to the row read in file + total amount of rows preceding it
+				if(row >= rows || col >= cols || num >= nums) {
+					throw new IncorrectMapFormatException("IncorrectMapFormatException - More rows or columns than initially declared");
+				}
+				else {
+					map[row + (rows*num)][col] = val; //row location is equal to the row read in file + total amount of rows preceding it
+				}
 				
 			}
 			//setting every remaining empty location in array equal to "."
@@ -137,6 +147,33 @@ public class Runner {
 		}
 		
 	}
+	
+	
+	public static void Queue() {
+		Queue<HashMap<String, ArrayList<Integer>>> myQueue = new LinkedList<>(); 
+		HashMap<String, ArrayList<Integer>> chars = new HashMap<>(); //hashmap stores character and its coordinates
+		ArrayList<Integer> coords = new ArrayList<>();
+		
+		//get position of wolverine (w)
+		for(int r = 0; r < map.length; r++) {
+			for(int c = 0; c < map[0].length; c++) {
+				if(map[r][c] == "w") {
+					coords.add(r);
+					coords.add(c);
+				}
+			}
+		}
+		
+		//enqueue
+		chars.put("w", coords); //added w to hashmap
+		myQueue.add(chars);
+		System.out.println(myQueue);
+		
+	}
+	
+	
+	
+	
 	
 	
 			
