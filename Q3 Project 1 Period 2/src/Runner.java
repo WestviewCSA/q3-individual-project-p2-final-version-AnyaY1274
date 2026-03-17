@@ -1,7 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Runner {
 
@@ -9,6 +14,11 @@ public class Runner {
 	private static int rows;
 	private static int cols;
 	private static int nums;
+	
+	private static int wolvX;
+	private static int wolvY;
+	private static int coinX;
+	private static int coinY;
 	
 	
 	public static void main(String[] name) { //main method needs to be exact
@@ -71,8 +81,6 @@ public class Runner {
 				}
 				
 			}
-			
-			
 			
 			System.out.println(Arrays.deepToString(map)); //printing map
 			scanner.close();
@@ -138,7 +146,47 @@ public class Runner {
 		
 	}
 	
-	
+	public static void Queue() {
+		Queue<ArrayList<Integer>> queue = new LinkedList<>(); 
+		
+		ArrayList<int[]> all = new ArrayList<>();
+		ArrayList<int[]> visited = new ArrayList<>();
+		
+		//enqueue wolverines position
+		//dequeue next location
+		//enqueue all walkable tiles
+		//check if the spaces have the coin. if not found repeat prev steps
+		//once the coin is found, guide the wolverine to it (replace chars w +)
+		
+		
+		//find coordinate of w and $
+		for(int r = 0; r < rows; r++) {
+			for(int c = 0; c < cols; c++) {
+				if(map[r][c] == "w" || map[r][c] == "W") {
+					wolvX = r;
+					wolvY = c;
+					int[] start = {wolvX, wolvY};
+					all.add(start);
+					queue.add(all.get(0));
+				}
+				if(map[r][c] == "$") {
+					coinX = r;
+					coinY = c;
+				}
+			}
+		}
+		
+		
+		
+		//need to save coordinates to queue
+		
+		
+		//need to determine location of wolverine:
+
+		
+		
+		
+	}
 			
 }
 
