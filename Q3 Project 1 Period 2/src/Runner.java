@@ -172,43 +172,38 @@ public class Runner {
 			}
 		}
 		
-		//arraylist will hold 1d arrays with coordinates of each point
 		Queue<int[]> queue = new LinkedList<>(); 
 		
+		//ArrayList<int[]> vis = new ArrayList<int[]>(); //holds all read coordinates
+		boolean[][] vis = new boolean[rows][cols]; //true if point has been visited, false otherwise
+		boolean coinFound = false;
 		
-		ArrayList<int[]> vis = new ArrayList<int[]>(); //holds all read coordinates
 		
+		//store the previous position of wolverine
+		int[][] parentRow = new int[rows][cols];
+		int[][] parentCol = new int[rows][cols];
+	
 		
 		//wolverine position is added to arr and then enqueued
 		int[] wolvCo = {wolvX, wolvY}; 
 		queue.add(wolvCo);
+		vis[wolvX][wolvY] = true;
 		
-		//v = queue.poll();
+		int[] northSouth = {-1, 1, 0, 0};
+		int[] eastWest = {0, 0, 1, -1};
 		
-		//enqueue north, south, east, and west
-		for(int r = wolvX; r < rows; r++) {
-			for(int c = wolvX; c < cols; c++) {
-				if(map[r][c-1]!= null && !map[r][c-1].equals("@")) {
-					int[] north = {r, c-1};
-					queue.add(north);
-				}
-				if(map[r][c+1]!= null && !map[r][c+1].equals("@")) {
-					int[] south = {r, c+1};
-					queue.add(south);
-				}
-				if(map[r+1][c]!= null && !map[r+1][c].equals("@")) {
-					int[] east = {r+1, c};
-					queue.add(east);
-				}
-				if(map[r-1][c]!= null && !map[r-1][c].equals("@")) {
-					int[] west = {r-1, c};
-					queue.add(west);
+		while(!queue.isEmpty()) {
+			int[] current = queue.remove(); //dequeue the first location and save each coordinate, then compare to coin coords
+			int rowVal = current[0];
+			int colVal = current[1];
+			
+			if(rowVal == coinX && colVal == coinY) {
+				coinFound = true;
+			} ()
 				}
 			}
+			
 		}
-		
-		
-		
 		
 	}
 			
