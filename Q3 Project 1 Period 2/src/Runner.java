@@ -199,11 +199,51 @@ public class Runner {
 			
 			if(rowVal == coinX && colVal == coinY) {
 				coinFound = true;
-			} ()
+			}
+			
+			//enqueue north south east west
+			for(int i = 0; i < 4; i++) {
+				int nextRow = rowVal + northSouth[i];
+				int nextCol = colVal + eastWest[i];
+				
+				//only include points that are still on the map (not null)
+				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol < cols) {
+					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) { //if coord has not been visited before and is walkable
+						vis[nextRow][nextCol] = true;
+						queue.add(new int[]{nextRow, nextCol}); //enqueue new points
+						
+						//need to store previous point
+						parentRow[nextRow][nextCol] = rowVal;
+						parentCol[nextRow][nextCol] = colVal;
+					}
 				}
+			}
+		}
+	
+		//once coin is found, need to retrace steps and rewrite path with +
+		if(coinFound == true) {
+			int r = coinX;
+			int c = coinY;
+			
+			while(r!= wolvX && c!= wolvY) { //excluding wolvs original position bc it is not overwritten
+				//find coords of previous point
+				int prevR = parentRow[r][c];
+				int prevC = parentCol[r][c];
+				
+				if(map[r][c].equals(".")) {
+					map[r][c] = "+";
+				}
+				
+				r = prevR;
+				c = prevC;
 			}
 			
 		}
+		else {
+			System.out.println("The Wolverine Store is closed"); //no coin can be found or coin is unreachable
+		}
+		
+		
 		
 	}
 			
