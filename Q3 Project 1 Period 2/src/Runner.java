@@ -36,6 +36,7 @@ public class Runner {
 //			System.out.println(e.getMessage());
 //		}
 		
+		Queue("easyMap2C");
 		Queue("easyMap2");
 	}
 	
@@ -190,14 +191,19 @@ public class Runner {
 		//find coordinate of w and $
 		for(int r = 0; r < rows; r++) {
 			for(int c = 0; c < cols; c++) {
+				if(map[r][c].equals("$")) {
+					coinX = r;
+					coinY = c;
+				}
+			}
+		}
+		
+		for(int r = 0; r < nums; r++) {
+			for(int c = 0; c < cols; c++) {
 				if(map[r][c].equals("w") || map[r][c].equals("W")) {
 					wolvX = r;
 					wolvY = c;
 					
-				}
-				if(map[r][c].equals("$")) {
-					coinX = r;
-					coinY = c;
 				}
 			}
 		}
@@ -239,7 +245,7 @@ public class Runner {
 				
 				//only include points that are still on the map (not null)
 				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol < cols) {
-					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@") && !map[nextRow][nextCol].equals("|")) { //if coord has not been visited before and is walkable
+					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) { //if coord has not been visited before and is walkable
 						vis[nextRow][nextCol] = true;
 						queue.add(new int[]{nextRow, nextCol}); //enqueue new points
 						
@@ -262,7 +268,7 @@ public class Runner {
 			int ro = coinX;
 			int co = coinY;
 			
-			while(ro!= wolvX || co!= wolvY) { //excluding wolvs original position bc it is not overwritten
+			while((ro!= wolvX || co!= wolvY)) { //excluding wolvs original position bc it is not overwritten
 				//find coords of previous point
 				int prevR = parentRow[ro][co];
 				int prevC = parentCol[ro][co];
@@ -277,20 +283,34 @@ public class Runner {
 			
 			//System.out.println(Arrays.deepToString(map)); //print map
 			
-			for(int r = 0; r < map.length; r++) {
-				for(int c = 0; c < map[0].length; c++) {
-					System.out.print(map[r][c]);
+			//print maps in proper formatting:
+			int nco = 0;
+			
+			if(fileName.contains("C")) {
+				for(int r = 0; r < map.length; r++) {
+					for(int c = 0; c < map[0].length; c++) {
+						if(map[r][c].equals("+")) {
+							if(nums>1) {
+								nco = rows/nums;
+							}
+							System.out.println("+ " + r + " "+ c + " " + nco);
+						}
+					}
 				}
-				System.out.println();
+			}
+			else {
+				for(int r = 0; r < map.length; r++) {
+					for(int c = 0; c < map[0].length; c++) {
+						System.out.print(map[r][c]);
+					}
+					System.out.println();
+				}
 			}
 			
 		}
 		else {
 			System.out.println("The Wolverine Store is closed."); //no coin can be found or coin is unreachable
 		}
-		
-		
-		
 	}
 			
 }
