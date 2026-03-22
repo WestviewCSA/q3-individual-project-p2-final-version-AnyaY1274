@@ -24,17 +24,19 @@ public class Runner {
 	public static void main(String[] name) { //main method needs to be exact
 		//readCoFile("easyMap1C");
 		
-		try{
-			readCoFile("easyMap1C");
-		} catch (IllegalMapCharacterException e) {
-			System.out.println(e.getMessage());
-		}  catch (IncompleteMapException e) {
-			System.out.println(e.getMessage());
-		} catch (IncorrectMapFormatException e) {
-			System.out.println(e.getMessage());
-		} catch (IllegalCommandLineInputsException e) {
-			System.out.println(e.getMessage());
-		}
+//		try{
+//			readCoFile("easyMap1C");
+//		} catch (IllegalMapCharacterException e) {
+//			System.out.println(e.getMessage());
+//		}  catch (IncompleteMapException e) {
+//			System.out.println(e.getMessage());
+//		} catch (IncorrectMapFormatException e) {
+//			System.out.println(e.getMessage());
+//		} catch (IllegalCommandLineInputsException e) {
+//			System.out.println(e.getMessage());
+//		}
+		
+		Queue("easyMap2");
 	}
 	
 	
@@ -82,7 +84,7 @@ public class Runner {
 				
 			}
 			
-			System.out.println(Arrays.deepToString(map)); //printing map
+			//System.out.println(Arrays.deepToString(map)); //printing map
 			scanner.close();
 		} 
 		
@@ -136,7 +138,7 @@ public class Runner {
 				}
 			}
 			
-			System.out.println(Arrays.deepToString(map)); //printing map
+			//System.out.println(Arrays.deepToString(map)); //printing map
 			scanner.close();
 		} 
 		
@@ -146,7 +148,7 @@ public class Runner {
 		
 	}
 	
-	public static void Queue() {
+	public static void Queue(String fileName) {
 		
 		//enqueue wolverines position
 			//find wolverines position
@@ -155,6 +157,34 @@ public class Runner {
 		//check if the spaces have the coin. if not found repeat prev steps
 			//find coins position
 		//once the coin is found, guide the wolverine to it (replace chars w +)
+		
+		
+		if(fileName.contains("C")) {
+			try{
+				readCoFile(fileName);
+			} catch (IllegalMapCharacterException e) {
+				System.out.println(e.getMessage());
+			}  catch (IncompleteMapException e) {
+				System.out.println(e.getMessage());
+			} catch (IncorrectMapFormatException e) {
+				System.out.println(e.getMessage());
+			} catch (IllegalCommandLineInputsException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		else {
+			try{
+				readTextFile(fileName);
+			} catch (IllegalMapCharacterException e) {
+				System.out.println(e.getMessage());
+			}  catch (IncompleteMapException e) {
+				System.out.println(e.getMessage());
+			} catch (IncorrectMapFormatException e) {
+				System.out.println(e.getMessage());
+			} catch (IllegalCommandLineInputsException e) {
+				System.out.println(e.getMessage());
+			}
+		}
 		
 		
 		//find coordinate of w and $
@@ -199,6 +229,7 @@ public class Runner {
 			
 			if(rowVal == coinX && colVal == coinY) {
 				coinFound = true;
+				break;
 			}
 			
 			//enqueue north south east west
@@ -208,7 +239,7 @@ public class Runner {
 				
 				//only include points that are still on the map (not null)
 				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol < cols) {
-					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) { //if coord has not been visited before and is walkable
+					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@") && !map[nextRow][nextCol].equals("|")) { //if coord has not been visited before and is walkable
 						vis[nextRow][nextCol] = true;
 						queue.add(new int[]{nextRow, nextCol}); //enqueue new points
 						
@@ -216,31 +247,46 @@ public class Runner {
 						parentRow[nextRow][nextCol] = rowVal;
 						parentCol[nextRow][nextCol] = colVal;
 					}
+					/*
+					if(map[nextRow][nextCol].equals("|")) {
+						for(int i = 0; i < 
+						queue.add(new int[]{});
+					}
+					*/
 				}
 			}
 		}
 	
 		//once coin is found, need to retrace steps and rewrite path with +
 		if(coinFound == true) {
-			int r = coinX;
-			int c = coinY;
+			int ro = coinX;
+			int co = coinY;
 			
-			while(r!= wolvX && c!= wolvY) { //excluding wolvs original position bc it is not overwritten
+			while(ro!= wolvX || co!= wolvY) { //excluding wolvs original position bc it is not overwritten
 				//find coords of previous point
-				int prevR = parentRow[r][c];
-				int prevC = parentCol[r][c];
+				int prevR = parentRow[ro][co];
+				int prevC = parentCol[ro][co];
 				
-				if(map[r][c].equals(".")) {
-					map[r][c] = "+";
+				if(map[ro][co].equals(".")) {
+					map[ro][co] = "+";
 				}
 				
-				r = prevR;
-				c = prevC;
+				ro = prevR;
+				co = prevC;
+			}
+			
+			//System.out.println(Arrays.deepToString(map)); //print map
+			
+			for(int r = 0; r < map.length; r++) {
+				for(int c = 0; c < map[0].length; c++) {
+					System.out.print(map[r][c]);
+				}
+				System.out.println();
 			}
 			
 		}
 		else {
-			System.out.println("The Wolverine Store is closed"); //no coin can be found or coin is unreachable
+			System.out.println("The Wolverine Store is closed."); //no coin can be found or coin is unreachable
 		}
 		
 		
