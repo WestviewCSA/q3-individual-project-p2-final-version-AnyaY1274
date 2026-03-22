@@ -147,43 +147,66 @@ public class Runner {
 	}
 	
 	public static void Queue() {
-		Queue<ArrayList<Integer>> queue = new LinkedList<>(); 
-		
-		ArrayList<int[]> all = new ArrayList<>();
-		ArrayList<int[]> visited = new ArrayList<>();
 		
 		//enqueue wolverines position
+			//find wolverines position
 		//dequeue next location
 		//enqueue all walkable tiles
 		//check if the spaces have the coin. if not found repeat prev steps
+			//find coins position
 		//once the coin is found, guide the wolverine to it (replace chars w +)
 		
 		
 		//find coordinate of w and $
 		for(int r = 0; r < rows; r++) {
 			for(int c = 0; c < cols; c++) {
-				if(map[r][c] == "w" || map[r][c] == "W") {
+				if(map[r][c].equals("w") || map[r][c].equals("W")) {
 					wolvX = r;
 					wolvY = c;
-					int[] start = {wolvX, wolvY};
-					all.add(start);
-					queue.add(all.get(0));
+					
 				}
-				if(map[r][c] == "$") {
+				if(map[r][c].equals("$")) {
 					coinX = r;
 					coinY = c;
 				}
 			}
 		}
-//testingngirnfsdjbjsdb
+		
+		//arraylist will hold 1d arrays with coordinates of each point
+		Queue<int[]> queue = new LinkedList<>(); 
 		
 		
+		ArrayList<int[]> vis = new ArrayList<int[]>(); //holds all read coordinates
 		
-		//need to save coordinates to queue
 		
+		//wolverine position is added to arr and then enqueued
+		int[] wolvCo = {wolvX, wolvY}; 
+		queue.add(wolvCo);
 		
-		//need to determine location of wolverine:
-
+		//v = queue.poll();
+		
+		//enqueue north, south, east, and west
+		for(int r = wolvX; r < rows; r++) {
+			for(int c = wolvX; c < cols; c++) {
+				if(map[r][c-1]!= null && !map[r][c-1].equals("@")) {
+					int[] north = {r, c-1};
+					queue.add(north);
+				}
+				if(map[r][c+1]!= null && !map[r][c+1].equals("@")) {
+					int[] south = {r, c+1};
+					queue.add(south);
+				}
+				if(map[r+1][c]!= null && !map[r+1][c].equals("@")) {
+					int[] east = {r+1, c};
+					queue.add(east);
+				}
+				if(map[r-1][c]!= null && !map[r-1][c].equals("@")) {
+					int[] west = {r-1, c};
+					queue.add(west);
+				}
+			}
+		}
+		
 		
 		
 		
