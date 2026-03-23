@@ -317,6 +317,7 @@ public class Runner {
 	
 	
 	
+	
 	public static void Stack(String fileName) {
 		
 		
@@ -347,6 +348,8 @@ public class Runner {
 			}
 		}
 		
+		
+		
 		Stack<int[]> stack  = new Stack(); //last in first out
 		
 		
@@ -358,7 +361,6 @@ public class Runner {
 		int[][] parentRow = new int[rows][cols];
 		int[][] parentCol = new int[rows][cols];
 		
-
 		int[] northSouth = {-1, 1, 0, 0};
 		int[] eastWest = {0, 0, 1, -1};
 
@@ -371,7 +373,6 @@ public class Runner {
 				}
 			}
 		}
-		
 		for(int r = 0; r < nums; r++) {
 			for(int c = 0; c < cols; c++) {
 				if(map[r][c].equals("w") || map[r][c].equals("W")) {
@@ -382,11 +383,12 @@ public class Runner {
 			}
 		}
 		
+		
 		stack.push(new int[] {wolvX, wolvY});
 		vis[wolvX][wolvY] = true;
 		
 		while(!stack.isEmpty()) {
-			int[] current = stack.pop();
+			int[] current = stack.pop(); //removes last added point
 			int rowVal = current[0];
 			int colVal = current[1];
 			
@@ -395,12 +397,23 @@ public class Runner {
 				break;
 			}
 			
+			//pushing north south east west coordinates
 			for(int i = 0; i < 4; i++) {
-				int nextRow = 
+				int nextRow = rowVal + northSouth[i];
+				int nextCol = colVal + eastWest[i];
+				
+				//remove nulls and unwalkable characters:
+				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol<cols) {
+					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) {
+						vis[nextRow][nextCol] = true;
+						stack.push(new int[] {nextRow, nextCol});
+						
+						//save past point coordinates to array so steps can be retraced
+						parentRow[nextRow][nextCol] = rowVal;
+						parentCol[nextRow][nextCol] = colVal;
+					}
+				}
 			}
-			
-			
-			
 		}
 		
 
