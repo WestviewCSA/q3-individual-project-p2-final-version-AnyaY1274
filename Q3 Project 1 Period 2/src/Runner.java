@@ -301,7 +301,20 @@ public class Runner {
 				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol < cols) {
 					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) { //if coord has not been visited before and is walkable
 						if(map[nextRow][nextCol].equals("|")) {
-							
+							for(int newR = nextRow; newR < rows; newR++) {
+								for(int c = 0; c < cols; c++) {
+									if(map[newR][c].equals("w") || map[newR][c].equals("W")) {
+										wolvX = newR;
+										wolvY = c;
+										for(int j = 0; j < queue.size(); j++) {
+											queue.poll();
+										}
+										queue.add(new int[] {wolvX, wolvY});
+										continue;
+									}
+									
+								}
+							}
 						}
 						vis[nextRow][nextCol] = true;
 						queue.add(new int[]{nextRow, nextCol}); //enqueue new points
@@ -473,6 +486,23 @@ public class Runner {
 				
 				//remove nulls and unwalkable characters:
 				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol<cols && vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) {
+					if(map[nextRow][nextCol].equals("|")) {
+						for(int newR = nextRow; newR < rows; newR++) {
+							for(int c = 0; c < cols; c++) {
+								if(map[newR][c].equals("w") || map[newR][c].equals("W")) {
+									wolvX = newR;
+									wolvY = c;
+									for(int j = 0; j < stack.size(); j++) {
+										stack.pop();
+									}
+									stack.add(new int[] {wolvX, wolvY});
+									continue;
+								}
+								
+							}
+						}
+					}
+					
 					vis[nextRow][nextCol] = true;
 					stack.push(new int[] {nextRow, nextCol});
 						
@@ -638,6 +668,24 @@ public class Runner {
 				
 				//remove nulls and unwalkable characters:
 				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol<cols && vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) {
+					
+					if(map[nextRow][nextCol].equals("|")) {
+						for(int newR = nextRow; newR < rows; newR++) {
+							for(int c = 0; c < cols; c++) {
+								if(map[newR][c].equals("w") || map[newR][c].equals("W")) {
+									wolvX = newR;
+									wolvY = c;
+									for(int j = 0; j < stack.size(); j++) {
+										stack.pop();
+									}
+									stack.add(new int[] {wolvX, wolvY});
+									continue;
+								}
+								
+							}
+						}
+					}
+					
 					vis[nextRow][nextCol] = true;
 					stack.push(new int[] {nextRow, nextCol});
 						
