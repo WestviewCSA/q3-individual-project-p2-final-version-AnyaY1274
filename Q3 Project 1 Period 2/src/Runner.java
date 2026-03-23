@@ -22,25 +22,15 @@ public class Runner {
 	private static int coinY;
 	
 	
-	public static void main(String[] name) { //main method needs to be exact
-		//readCoFile("easyMap1C");
+	public static void main(String[] args) { //main method needs to be exact
 		
-//		try{
-//			readCoFile("easyMap1C");
-//		} catch (IllegalMapCharacterException e) {
-//			System.out.println(e.getMessage());
-//		}  catch (IncompleteMapException e) {
-//			System.out.println(e.getMessage());
-//		} catch (IncorrectMapFormatException e) {
-//			System.out.println(e.getMessage());
-//		} catch (IllegalCommandLineInputsException e) {
-//			System.out.println(e.getMessage());
+//		String option = args[0];
+//		
+//		switch(option) {
+//			case "--Queue": Queue()
 //		}
-		
-		//Queue("easyMap2");
-//		Queue("easyMap2");
-		
-		Stack("easyMap2");
+//		
+		Queue("easyMap2");
 	}
 	
 	
@@ -332,8 +322,170 @@ public class Runner {
 	
 	
 	
-	
 	public static void Stack(String fileName) {
+		
+		
+		if(fileName.contains("C")) {
+			try{
+				readCoFile(fileName);
+			} catch (IllegalMapCharacterException e) {
+				System.out.println(e.getMessage());
+			}  catch (IncompleteMapException e) {
+				System.out.println(e.getMessage());
+			} catch (IncorrectMapFormatException e) {
+				System.out.println(e.getMessage());
+			} catch (IllegalCommandLineInputsException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		else {
+			try{
+				readTextFile(fileName);
+			} catch (IllegalMapCharacterException e) {
+				System.out.println(e.getMessage());
+			}  catch (IncompleteMapException e) {
+				System.out.println(e.getMessage());
+			} catch (IncorrectMapFormatException e) {
+				System.out.println(e.getMessage());
+			} catch (IllegalCommandLineInputsException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		
+		
+		Stack<int[]> stack  = new Stack<>(); //last in first out
+		
+		
+		boolean[][] vis = new boolean[rows][cols]; //true if point has been visited, false otherwise
+		boolean coinFound = false;
+		
+
+		//store the previous position of wolverine
+		int[][] parentRow = new int[rows][cols];
+		int[][] parentCol = new int[rows][cols];
+		
+		int[] northSouth = {-1, 1, 0, 0};
+		int[] eastWest = {0, 0, 1, -1};
+
+		
+		//adding runtime
+		long startTime = System.nanoTime();
+		long total = 0;
+		
+		
+		//find coordinate of w and $
+		for(int r = 0; r < rows; r++) {
+			for(int c = 0; c < cols; c++) {
+				if(map[r][c].equals("$")) {
+					coinX = r;
+					coinY = c;
+				}
+			}
+		}
+		for(int r = 0; r < nums; r++) {
+			for(int c = 0; c < cols; c++) {
+				if(map[r][c].equals("w") || map[r][c].equals("W")) {
+					wolvX = r;
+					wolvY = c;
+					
+				}
+			}
+		}
+
+		
+		stack.push(new int[] {wolvX, wolvY});
+		vis[wolvX][wolvY] = true;
+		
+		while(!stack.isEmpty()) {
+			int[] current = stack.pop(); //removes last added point
+			int rowVal = current[0];
+			int colVal = current[1];
+			
+			if(rowVal == coinX && colVal == coinY) { //must be && because we want to compare it to the exact location of the coin, not any points in the same row or column.
+				coinFound = true;
+				break;
+			}
+			
+			for(int i = 0; i < 4; i++) {
+				int nextRow = rowVal + northSouth[i];
+				int nextCol = colVal + eastWest[i];
+				
+				//remove nulls and unwalkable characters:
+				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol<cols && vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) {
+					vis[nextRow][nextCol] = true;
+					stack.push(new int[] {nextRow, nextCol});
+						
+					//save past point coordinates to array so steps can be retraced
+					parentRow[nextRow][nextCol] = rowVal;
+					parentCol[nextRow][nextCol] = colVal;
+				
+				}
+			}
+		}
+		
+		if(coinFound == true) {
+			int ro = coinX;
+			int co = coinY;
+			
+			while((ro!= wolvX || co!= wolvY)) { 
+				int prevR = parentRow[ro][co];
+				int prevC = parentCol[ro][co];
+				
+				if(map[ro][co].equals(".")) {
+					map[ro][co] = "+"; //replacing found path with +s
+				}
+				
+				ro = prevR;
+				co = prevC;
+			}
+			
+			
+			long endTime = System.nanoTime();
+			total = endTime-startTime;
+			
+			//print maps in proper formatting specific to their type:
+			
+			int nco = 0; //used to properly label maps w multiple sections
+			
+			if(fileName.contains("C")) {
+				for(int r = 0; r < map.length; r++) {
+					for(int c = 0; c < map[0].length; c++) {
+						if(map[r][c].equals("+")) {
+							if(nums>1) {
+								nco = rows/nums;
+							}
+							System.out.println("+ " + r + " "+ c + " " + nco);
+						}
+					}
+				}
+			}
+			else {
+				for(int r = 0; r < map.length; r++) {
+					for(int c = 0; c < map[0].length; c++) {
+						System.out.print(map[r][c]);
+					}
+					System.out.println();
+				}
+			}
+			
+		}
+		else {
+			System.out.println("The Wolverine Store is closed."); //no coin can be found or coin is unreachable
+		}
+
+		double convert = (double) total/1000000000;
+		String formatSeconds = String.format("%f", convert);
+		System.out.println("Total RunTime: " + formatSeconds + " seconds");
+		
+	}
+	
+		
+	
+	
+
+	
+	public static void Optimal(String fileName) {
 		
 		
 		if(fileName.contains("C")) {
@@ -420,7 +572,6 @@ public class Runner {
 			
 			//pushing north south east west coordinates in the opposite order
 			//this will make them get popped in the north south east west order
-			//lowk dont know if im allowed to do this........
 			for(int i = 3; i >= 0; i--) {
 				int nextRow = rowVal + northSouth[i];
 				int nextCol = colVal + eastWest[i];
@@ -442,7 +593,7 @@ public class Runner {
 			int ro = coinX;
 			int co = coinY;
 			
-			while((ro!= wolvX || co!= wolvY)) { //must be || because we dont want it to be the exact position of the wolverine but it can be any value in teh same row or column
+			while((ro!= wolvX || co!= wolvY)) { 
 				int prevR = parentRow[ro][co];
 				int prevC = parentCol[ro][co];
 				
@@ -493,6 +644,7 @@ public class Runner {
 		System.out.println("Total RunTime: " + formatSeconds + " seconds");
 	}
 	
-			
+	
+	
 }
 
