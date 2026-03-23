@@ -203,6 +203,11 @@ public class Runner {
 		int[][] parentRow = new int[rows][cols];
 		int[][] parentCol = new int[rows][cols];
 
+		//adding runtime
+		long startTime = System.nanoTime();
+		long total = 0;
+		
+		
 		//find coordinate of w and $
 		for(int r = 0; r < rows; r++) {
 			for(int c = 0; c < cols; c++) {
@@ -285,6 +290,10 @@ public class Runner {
 				co = prevC;
 			}
 			
+			long endTime = System.nanoTime();
+			total = endTime - startTime;
+			
+			
 			//System.out.println(Arrays.deepToString(map)); //print map
 			
 			//print maps in proper formatting:
@@ -315,6 +324,10 @@ public class Runner {
 		else {
 			System.out.println("The Wolverine Store is closed."); //no coin can be found or coin is unreachable
 		}
+		
+		double convert = (double) total/1000000000;
+		String formatSeconds = String.format("%f", convert);
+		System.out.println("Total RunTime: " + formatSeconds + " seconds");
 	}
 	
 	
@@ -366,6 +379,12 @@ public class Runner {
 		int[] northSouth = {-1, 1, 0, 0};
 		int[] eastWest = {0, 0, 1, -1};
 
+		
+		//adding runtime
+		long startTime = System.nanoTime();
+		long total = 0;
+		
+		
 		//find coordinate of w and $
 		for(int r = 0; r < rows; r++) {
 			for(int c = 0; c < cols; c++) {
@@ -384,7 +403,7 @@ public class Runner {
 				}
 			}
 		}
-		
+
 		
 		stack.push(new int[] {wolvX, wolvY});
 		vis[wolvX][wolvY] = true;
@@ -401,6 +420,7 @@ public class Runner {
 			
 			//pushing north south east west coordinates in the opposite order
 			//this will make them get popped in the north south east west order
+			//lowk dont know if im allowed to do this........
 			for(int i = 3; i >= 0; i--) {
 				int nextRow = rowVal + northSouth[i];
 				int nextCol = colVal + eastWest[i];
@@ -435,6 +455,9 @@ public class Runner {
 			}
 			
 			
+			long endTime = System.nanoTime();
+			total = endTime-startTime;
+			
 			//print maps in proper formatting specific to their type:
 			
 			int nco = 0; //used to properly label maps w multiple sections
@@ -465,7 +488,9 @@ public class Runner {
 			System.out.println("The Wolverine Store is closed."); //no coin can be found or coin is unreachable
 		}
 
-		
+		double convert = (double) total/1000000000;
+		String formatSeconds = String.format("%f", convert);
+		System.out.println("Total RunTime: " + formatSeconds + " seconds");
 	}
 	
 			
