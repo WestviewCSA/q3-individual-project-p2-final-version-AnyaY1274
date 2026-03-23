@@ -37,8 +37,10 @@ public class Runner {
 //			System.out.println(e.getMessage());
 //		}
 		
-		Queue("easyMap2C");
-		Queue("easyMap2");
+		//Queue("easyMap2");
+//		Queue("easyMap2");
+		
+		Stack("easyMap2");
 	}
 	
 	
@@ -272,7 +274,7 @@ public class Runner {
 			
 			while((ro!= wolvX || co!= wolvY)) { //excluding wolvs original position bc it is not overwritten
 				//find coords of previous point
-				int prevR = parentRow[ro][co];
+				int prevR = parentRow[ro][co]; //tracing backwards from coins position
 				int prevC = parentCol[ro][co];
 				
 				if(map[ro][co].equals(".")) {
@@ -350,7 +352,7 @@ public class Runner {
 		
 		
 		
-		Stack<int[]> stack  = new Stack(); //last in first out
+		Stack<int[]> stack  = new Stack<>(); //last in first out
 		
 		
 		boolean[][] vis = new boolean[rows][cols]; //true if point has been visited, false otherwise
@@ -392,30 +394,76 @@ public class Runner {
 			int rowVal = current[0];
 			int colVal = current[1];
 			
-			if(rowVal == coinX || colVal == coinX) {
+			if(rowVal == coinX && colVal == coinY) { //must be && because we want to compare it to the exact location of the coin, not any points in the same row or column.
 				coinFound = true;
 				break;
 			}
 			
-			//pushing north south east west coordinates
-			for(int i = 0; i < 4; i++) {
+			//pushing north south east west coordinates in the opposite order
+			//this will make them get popped in the north south east west order
+			for(int i = 3; i >= 0; i--) {
 				int nextRow = rowVal + northSouth[i];
 				int nextCol = colVal + eastWest[i];
 				
 				//remove nulls and unwalkable characters:
-				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol<cols) {
-					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) {
-						vis[nextRow][nextCol] = true;
-						stack.push(new int[] {nextRow, nextCol});
+				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol<cols && vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) {
+					vis[nextRow][nextCol] = true;
+					stack.push(new int[] {nextRow, nextCol});
 						
-						//save past point coordinates to array so steps can be retraced
-						parentRow[nextRow][nextCol] = rowVal;
-						parentCol[nextRow][nextCol] = colVal;
-					}
+					//save past point coordinates to array so steps can be retraced
+					parentRow[nextRow][nextCol] = rowVal;
+					parentCol[nextRow][nextCol] = colVal;
+				
 				}
 			}
 		}
 		
+		if(coinFound == true) {
+			int ro = coinX;
+			int co = coinY;
+			
+			while((ro!= wolvX || co!= wolvY)) { //must be || because we dont want it to be the exact position of the wolverine but it can be any value in teh same row or column
+				int prevR = parentRow[ro][co];
+				int prevC = parentCol[ro][co];
+				
+				if(map[ro][co].equals(".")) {
+					map[ro][co] = "+"; //replacing found path with +s
+				}
+				
+				ro = prevR;
+				co = prevC;
+			}
+			
+			
+			//print maps in proper formatting specific to their type:
+			
+			int nco = 0; //used to properly label maps w multiple sections
+			
+			if(fileName.contains("C")) {
+				for(int r = 0; r < map.length; r++) {
+					for(int c = 0; c < map[0].length; c++) {
+						if(map[r][c].equals("+")) {
+							if(nums>1) {
+								nco = rows/nums;
+							}
+							System.out.println("+ " + r + " "+ c + " " + nco);
+						}
+					}
+				}
+			}
+			else {
+				for(int r = 0; r < map.length; r++) {
+					for(int c = 0; c < map[0].length; c++) {
+						System.out.print(map[r][c]);
+					}
+					System.out.println();
+				}
+			}
+			
+		}
+		else {
+			System.out.println("The Wolverine Store is closed."); //no coin can be found or coin is unreachable
+		}
 
 		
 	}
