@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class Runner {
 
@@ -188,6 +189,18 @@ public class Runner {
 		}
 		
 		
+		
+		Queue<int[]> queue = new LinkedList<>(); 
+		
+		//ArrayList<int[]> vis = new ArrayList<int[]>(); //holds all read coordinates
+		boolean[][] vis = new boolean[rows][cols]; //true if point has been visited, false otherwise
+		boolean coinFound = false;
+		
+		
+		//store the previous position of wolverine
+		int[][] parentRow = new int[rows][cols];
+		int[][] parentCol = new int[rows][cols];
+
 		//find coordinate of w and $
 		for(int r = 0; r < rows; r++) {
 			for(int c = 0; c < cols; c++) {
@@ -208,18 +221,6 @@ public class Runner {
 			}
 		}
 		
-		Queue<int[]> queue = new LinkedList<>(); 
-		
-		//ArrayList<int[]> vis = new ArrayList<int[]>(); //holds all read coordinates
-		boolean[][] vis = new boolean[rows][cols]; //true if point has been visited, false otherwise
-		boolean coinFound = false;
-		
-		
-		//store the previous position of wolverine
-		int[][] parentRow = new int[rows][cols];
-		int[][] parentCol = new int[rows][cols];
-	
-		
 		//wolverine position is added to arr and then enqueued
 		int[] wolvCo = {wolvX, wolvY}; 
 		queue.add(wolvCo);
@@ -229,9 +230,10 @@ public class Runner {
 		int[] eastWest = {0, 0, 1, -1};
 		
 		while(!queue.isEmpty()) {
-			int[] current = queue.remove(); //dequeue the first location and save each coordinate, then compare to coin coords
-			int rowVal = current[0];
-			int colVal = current[1];
+			//dequeue the first location and save each coordinate, then compare to coin coords
+			int[] current = queue.remove(); //save the first value added
+			int rowVal = current[0]; //save the row number of the first coordinate
+			int colVal = current[1]; //save the column number of the first coordinate
 			
 			if(rowVal == coinX && colVal == coinY) {
 				coinFound = true;
@@ -312,6 +314,99 @@ public class Runner {
 			System.out.println("The Wolverine Store is closed."); //no coin can be found or coin is unreachable
 		}
 	}
+	
+	
+	
+	public static void Stack(String fileName) {
+		
+		
+		if(fileName.contains("C")) {
+			try{
+				readCoFile(fileName);
+			} catch (IllegalMapCharacterException e) {
+				System.out.println(e.getMessage());
+			}  catch (IncompleteMapException e) {
+				System.out.println(e.getMessage());
+			} catch (IncorrectMapFormatException e) {
+				System.out.println(e.getMessage());
+			} catch (IllegalCommandLineInputsException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		else {
+			try{
+				readTextFile(fileName);
+			} catch (IllegalMapCharacterException e) {
+				System.out.println(e.getMessage());
+			}  catch (IncompleteMapException e) {
+				System.out.println(e.getMessage());
+			} catch (IncorrectMapFormatException e) {
+				System.out.println(e.getMessage());
+			} catch (IllegalCommandLineInputsException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		Stack<int[]> stack  = new Stack(); //last in first out
+		
+		
+		boolean[][] vis = new boolean[rows][cols]; //true if point has been visited, false otherwise
+		boolean coinFound = false;
+		
+
+		//store the previous position of wolverine
+		int[][] parentRow = new int[rows][cols];
+		int[][] parentCol = new int[rows][cols];
+		
+
+		int[] northSouth = {-1, 1, 0, 0};
+		int[] eastWest = {0, 0, 1, -1};
+
+		//find coordinate of w and $
+		for(int r = 0; r < rows; r++) {
+			for(int c = 0; c < cols; c++) {
+				if(map[r][c].equals("$")) {
+					coinX = r;
+					coinY = c;
+				}
+			}
+		}
+		
+		for(int r = 0; r < nums; r++) {
+			for(int c = 0; c < cols; c++) {
+				if(map[r][c].equals("w") || map[r][c].equals("W")) {
+					wolvX = r;
+					wolvY = c;
+					
+				}
+			}
+		}
+		
+		stack.push(new int[] {wolvX, wolvY});
+		vis[wolvX][wolvY] = true;
+		
+		while(!stack.isEmpty()) {
+			int[] current = stack.pop();
+			int rowVal = current[0];
+			int colVal = current[1];
+			
+			if(rowVal == coinX || colVal == coinX) {
+				coinFound = true;
+				break;
+			}
+			
+			for(int i = 0; i < 4; i++) {
+				int nextRow = 
+			}
+			
+			
+			
+		}
+		
+
+		
+	}
+	
 			
 }
 
