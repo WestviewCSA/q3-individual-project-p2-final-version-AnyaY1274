@@ -21,16 +21,72 @@ public class Runner {
 	private static int coinX;
 	private static int coinY;
 	
+	private static boolean useStack = false;
+	private static boolean useQueue = false;
+	private static boolean useOpt = false;
+	private static boolean time = false;
+	private static boolean inCoord = false;
+	private static boolean outCoord = false;
+	private static boolean help = false;
 	
 	public static void main(String[] args) { //main method needs to be exact
 		
-//		String option = args[0];
-//		
-//		switch(option) {
-//			case "--Queue": Queue()
-//		}
-//		
-		Queue("easyMap2");
+		String option = args[0];
+
+		int count = 0;
+		
+		for(String arg : args) {
+			switch(arg) {
+			case "--Stack":
+				useStack = true;
+				count++;
+				break;
+				
+			case "--Queue":
+				useQueue = true;
+				count++;
+				break;
+			case "--Opt":
+				useOpt = true;
+				count++;
+				break;
+			case "Time":
+				time = true;
+				count++;
+				break;
+			case "--Incoordinate":
+				inCoord = true;
+				count++;
+				break;
+			case "--Outcoordinate":
+				outCoord = true;
+				count++;
+				break;
+			case "--Help":
+				help = true;
+				count++;
+				System.out.println("This program determines a path for the Wolverine to find the Wolverine Buck. The --Stack, --Queue, and --Opt switches allow the user to choose the method for finding the Wolverine Buck. The --Incoordinate and --Outcoordinate switches allow the user to select if the input or output of file is in coordinate form. The --Time switch allows the user to see the time taken to find the path.");
+				break;
+			}
+		}
+		
+		if(useQueue == true) {
+			Queue(option);
+		}
+		
+		if(useStack == true) {
+			Stack(option);
+		}
+		
+		if(useOpt == true) {
+			Optimal(option);
+		}
+		
+		if(count < 1) {
+			System.out.println("IllegalCommandLineInputException");
+		}
+		
+		//Queue("easyMap2");
 	}
 	
 	
@@ -40,7 +96,6 @@ public class Runner {
 		try { 
 			//reading file
 			Scanner scanner = new Scanner(file);
-			
 			
 			//saving how many total rows, columns, and sections are in the map
 			
@@ -153,7 +208,7 @@ public class Runner {
 		//once the coin is found, guide the wolverine to it (replace chars w +)
 		
 		
-		if(fileName.contains("C")) {
+		if(inCoord == true) {
 			try{
 				readCoFile(fileName);
 			} catch (IllegalMapCharacterException e) {
@@ -245,6 +300,9 @@ public class Runner {
 				//only include points that are still on the map (not null)
 				if(nextRow >= 0 && nextRow<rows && nextCol >= 0 && nextCol < cols) {
 					if(vis[nextRow][nextCol] == false && !map[nextRow][nextCol].equals("@")) { //if coord has not been visited before and is walkable
+						if(map[nextRow][nextCol].equals("|")) {
+							
+						}
 						vis[nextRow][nextCol] = true;
 						queue.add(new int[]{nextRow, nextCol}); //enqueue new points
 						
@@ -289,7 +347,7 @@ public class Runner {
 			//print maps in proper formatting:
 			int nco = 0;
 			
-			if(fileName.contains("C")) {
+			if(outCoord == true) {
 				for(int r = 0; r < map.length; r++) {
 					for(int c = 0; c < map[0].length; c++) {
 						if(map[r][c].equals("+")) {
@@ -317,7 +375,9 @@ public class Runner {
 		
 		double convert = (double) total/1000000000;
 		String formatSeconds = String.format("%f", convert);
-		System.out.println("Total RunTime: " + formatSeconds + " seconds");
+		if(time == true) {
+			System.out.println("Total RunTime: " + formatSeconds + " seconds");
+		}
 	}
 	
 	
@@ -325,7 +385,7 @@ public class Runner {
 	public static void Stack(String fileName) {
 		
 		
-		if(fileName.contains("C")) {
+		if(inCoord == true) {
 			try{
 				readCoFile(fileName);
 			} catch (IllegalMapCharacterException e) {
@@ -448,7 +508,7 @@ public class Runner {
 			
 			int nco = 0; //used to properly label maps w multiple sections
 			
-			if(fileName.contains("C")) {
+			if(outCoord == true) {
 				for(int r = 0; r < map.length; r++) {
 					for(int c = 0; c < map[0].length; c++) {
 						if(map[r][c].equals("+")) {
@@ -476,19 +536,19 @@ public class Runner {
 
 		double convert = (double) total/1000000000;
 		String formatSeconds = String.format("%f", convert);
-		System.out.println("Total RunTime: " + formatSeconds + " seconds");
+		if(time == true) {
+			System.out.println("Total RunTime: " + formatSeconds + " seconds");
+		}
+		
 		
 	}
 	
 		
 	
-	
-
-	
 	public static void Optimal(String fileName) {
 		
 		
-		if(fileName.contains("C")) {
+		if(inCoord == true) {
 			try{
 				readCoFile(fileName);
 			} catch (IllegalMapCharacterException e) {
@@ -613,7 +673,7 @@ public class Runner {
 			
 			int nco = 0; //used to properly label maps w multiple sections
 			
-			if(fileName.contains("C")) {
+			if(outCoord == true) {
 				for(int r = 0; r < map.length; r++) {
 					for(int c = 0; c < map[0].length; c++) {
 						if(map[r][c].equals("+")) {
@@ -641,7 +701,9 @@ public class Runner {
 
 		double convert = (double) total/1000000000;
 		String formatSeconds = String.format("%f", convert);
-		System.out.println("Total RunTime: " + formatSeconds + " seconds");
+		if(time == true) {
+			System.out.println("Total RunTime: " + formatSeconds + " seconds");
+		}
 	}
 	
 	
